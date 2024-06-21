@@ -1,0 +1,26 @@
+:host {
+    position: fixed;
+    top: 30%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    
+}
+
+.life-bar {
+    width: 150%;
+    height: 18px;
+    background-color: #0acd4eb8;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.life {
+    width: 100%;
+    height: 100%;
+    background-color: #4CAF50;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    transition: width 0.5s;
+}
