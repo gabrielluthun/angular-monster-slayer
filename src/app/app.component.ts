@@ -16,4 +16,5 @@ import { LogComponent } from './log/log.component';
 export class AppComponent {
   constructor() { }
   title = 'monster-slayer';
+
 }

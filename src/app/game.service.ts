@@ -2,91 +2,98 @@ import { Injectable } from '@angular/core';
 import { RandomNumberService } from './random-number.service';
 import { LogService } from './log.service';
 
+
 @Injectable({
   providedIn: 'root',
 })
 export class GameService {
   constructor(
-    public randomNumberService: RandomNumberService,
-    public LogService: LogService
+    private randomNumberService: RandomNumberService,
+    private logService: LogService
   ) { }
 
   playerMaxHealth: number = 100;
   monsterMaxHealth: number = 100;
-  playerHealth: number = this.playerMaxHealth;
+  playerHealth: number = 100;
   monsterHealth: number = this.monsterMaxHealth;
-  playerDamage: number = 0;
-  monsterDamage: number = 0;
-  healPoints: number = 0;
+  playerDamage = this.randomNumberService.generate(1, 10);
+  monsterDamage = this.randomNumberService.generate(1, 10);
+  playerDamageMultiplier = this.playerDamage;
+  monsterDamageMultiplier = this.monsterDamage;
+  victoryStreak: number = 0;
 
   playerAttack() {
-    this.playerDamage = this.randomNumberService.generate(1, 10);
+
     this.monsterHealth -= this.playerDamage;
-    this.LogService.addLog(`Player hits Monster for ${this.playerDamage} !`);
+    this.logService.addLog(`Player inflicts ${this.playerDamage} damage to the monster!`);
     this.monsterAttack();
-    this.LogService.addLog(
-      `Monster replied with ${this.monsterDamage} damage !`
-    );
     this.checkGameOver();
   }
 
   monsterAttack() {
-    this.monsterDamage = this.randomNumberService.generate(1, 10);
-    this.playerHealth -= this.monsterDamage;
+    const monsterDamage = this.randomNumberService.generate(1, 10);
+    this.playerHealth -= monsterDamage;
+    this.logService.addLog(`Monster retaliates with ${monsterDamage} damage!`);
   }
 
   specialAttack() {
-    this.playerDamage = this.randomNumberService.generate(15, 25);
-    this.LogService.addLog(`Player hits Monster hard for ${this.playerDamage}`);
-    this.monsterHealth -= this.playerDamage;
-    this.LogService.addLog(`Monster replied with ${this.monsterDamage} damage`);
-    this.monsterAttack(), this.checkGameOver();
+    const playerDamage = this.randomNumberService.generate(15, 25);
+    this.monsterHealth -= playerDamage;
+    this.logService.addLog(`Player delivers a powerful blow of ${playerDamage} damage to the monster!`);
+    this.monsterAttack();
+    this.checkGameOver();
   }
 
   heal() {
-    this.healPoints = this.randomNumberService.generate(5, 15);
-    this.LogService.addLog(`Player healed for ${this.healPoints}`);
-    this.playerHealth += this.healPoints;
+    const healPoints = this.randomNumberService.generate(5, 15);
+    this.playerHealth = Math.min(this.playerHealth + healPoints, this.playerMaxHealth);
+    this.logService.addLog(`Player heals for ${healPoints} health points.`);
     this.monsterAttack();
-    this.LogService.addLog(
-      `Monster replied to this healing with ${this.monsterDamage} damage`
-    );
     this.checkGameOver();
   }
 
   resign() {
-    alert('You resigned !');
-    this.playerHealth = 0;  
-    this.monsterHealth = 0;
-
+    this.logService.addLog('Player resigns the game!');
+    this.victoryStreak = 0;
     setTimeout(() => {
       this.resetGame();
     }, 750);
   }
 
   resetGame() {
-    this.LogService.clearLogs();
-    this.playerHealth = this.playerMaxHealth;
-    this.monsterHealth = this.monsterMaxHealth;
+    setTimeout(() => {
+      this.playerHealth = this.playerMaxHealth = 100;
+      this.monsterHealth = this.monsterMaxHealth = 100;
+      this.logService.clearLogs();
+    }, 750);
   }
 
   checkGameOver() {
-    switch (true) {
-      case this.playerHealth <= 0:
-        alert('You lost !');
-        this.resetGame();
-        break;
-      case this.monsterHealth <= 0:
-        alert('You won !');
-        this.resetGame();
-        break;
+    if (this.playerHealth <= 0) {
+      alert('You lost!');
+      this.resetGame();
+      this.victoryStreak = 0;
+    } else if (this.monsterHealth <= 0) {
+      alert('You won!');
+      this.victoryStreak++;
+      this.increasePowerBasedOnStreak();
+      this.monsterHealth = this.monsterMaxHealth;
     }
+  }
 
-    if (this.playerHealth > this.playerMaxHealth) {
-      this.playerHealth = this.playerMaxHealth;
-      if (this.healPoints > 0) {
-        alert('You already have full life !');
-      }
+  increasePowerBasedOnStreak() {
+    if (this.victoryStreak > 0) {
+      this.playerMaxHealth += this.randomNumberService.generate(5, 10);
+      this.monsterMaxHealth += this.randomNumberService.generate(25, 50);
+      // Augmenter les dégâts du joueur d'une valeur fixe ou d'un petit pourcentage
+      // Exemple: Augmentation de 5% ou d'une valeur fixe de 2
+      const playerDamageIncrease = Math.floor(this.playerDamage * 0.15);
+      const monsterDamageIncrease = Math.floor(this.monsterDamage * 2);
+      this.playerDamage += playerDamageIncrease;  
+      this.monsterDamage += monsterDamageIncrease;
+      this.playerHealth = this.playerMaxHealth; //Reset player health
+
+
     }
   }
 }

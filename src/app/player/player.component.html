@@ -1,4 +1,4 @@
 <h3>Player's Health:</h3>
 <div class="life-bar">
-    <div class="life" [style.width.%]="gameService.playerHealth">{{ gameService.playerHealth }}</div>
+    <div class="life" [style.width.%]="getLimitedPlayerHealthBarWidth()"><span>{{ gameService.playerHealth }}</span></div>
 </div>

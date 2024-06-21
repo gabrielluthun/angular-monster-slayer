@@ -12,4 +12,8 @@ import { GameService } from '../game.service';
 export class MonsterComponent {
   constructor(public gameService: GameService) { } 
 
+  getLimitedMonsterHealthBarWidth() {
+    const healthPercentage = (this.gameService.monsterHealth / this.gameService.monsterMaxHealth) * 100;
+  return Math.min(healthPercentage, 100);
+  }
 }

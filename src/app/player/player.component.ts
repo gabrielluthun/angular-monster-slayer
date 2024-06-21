@@ -11,4 +11,9 @@ import { RandomNumberService } from '../random-number.service';
 })
 export class PlayerComponent {
   constructor(public gameService: GameService) { } 
+
+  getLimitedPlayerHealthBarWidth() {
+    const healthPercentage = (this.gameService.playerHealth / this.gameService.playerMaxHealth) * 100;
+  return Math.min(healthPercentage, 100);
+  }
 }
