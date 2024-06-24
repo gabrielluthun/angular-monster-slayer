@@ -37,7 +37,7 @@ export class GameService {
   }
 
   specialAttack() {
-    const playerDamage = this.randomNumberService.generate(15, 25);
+    const playerDamage = this.randomNumberService.generate(20, 60);
     this.monsterHealth -= playerDamage;
     this.logService.addLog(`Player delivers a powerful blow of ${playerDamage} damage to the monster!`);
     this.monsterAttack();
