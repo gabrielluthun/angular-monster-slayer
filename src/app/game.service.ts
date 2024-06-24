@@ -45,7 +45,7 @@ export class GameService {
   }
 
   heal() {
-    const healPoints = this.randomNumberService.generate(25, 35);
+    const healPoints = this.randomNumberService.generate(20, 25);
     this.playerHealth = Math.min(this.playerHealth + healPoints, this.playerMaxHealth);
     this.logService.addLog(`Player heals for ${healPoints} health points.`);
     this.monsterAttack();
