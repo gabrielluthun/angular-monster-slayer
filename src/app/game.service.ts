@@ -16,7 +16,7 @@ export class GameService {
   monsterMaxHealth: number = 100;
   playerHealth: number = 100;
   monsterHealth: number = this.monsterMaxHealth;
-  playerDamage = this.randomNumberService.generate(1, 10);
+  playerDamage = this.randomNumberService.generate(1, 5);
   monsterDamage = this.randomNumberService.generate(1, 10);
   playerDamageMultiplier = this.playerDamage;
   monsterDamageMultiplier = this.monsterDamage;
@@ -31,7 +31,7 @@ export class GameService {
   }
 
   monsterAttack() {
-    const monsterDamage = this.randomNumberService.generate(1, 10);
+    const monsterDamage = this.randomNumberService.generate(10, 15);
     this.playerHealth -= monsterDamage;
     this.logService.addLog(`Monster retaliates with ${monsterDamage} damage!`);
   }
