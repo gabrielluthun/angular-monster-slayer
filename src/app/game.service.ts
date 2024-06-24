@@ -85,10 +85,9 @@ export class GameService {
     if (this.victoryStreak > 0) {
       this.playerMaxHealth += this.randomNumberService.generate(5, 10);
       this.monsterMaxHealth += this.randomNumberService.generate(25, 50);
-      // Augmenter les dégâts du joueur d'une valeur fixe ou d'un petit pourcentage
-      // Exemple: Augmentation de 5% ou d'une valeur fixe de 2
-      const playerDamageIncrease = Math.floor(this.playerDamage * 0.15);
-      const monsterDamageIncrease = Math.floor(this.monsterDamage * 2);
+
+      const playerDamageIncrease = Math.round(this.playerDamage * 0.15);
+      const monsterDamageIncrease = Math.round(this.monsterDamage * 2);
       this.playerDamage += playerDamageIncrease;  
       this.monsterDamage += monsterDamageIncrease;
       this.playerHealth = this.playerMaxHealth; //Reset player health
