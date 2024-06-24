@@ -86,7 +86,7 @@ export class GameService {
       this.playerMaxHealth += this.randomNumberService.generate(5, 10);
       this.monsterMaxHealth += this.randomNumberService.generate(25, 50);
 
-      const playerDamageIncrease = Math.round(this.playerDamage * 0.15);
+      const playerDamageIncrease = Math.round(this.playerDamage * 0.05);
       const monsterDamageIncrease = Math.round(this.monsterDamage * 2);
       this.playerDamage += playerDamageIncrease;  
       this.monsterDamage += monsterDamageIncrease;
